@@ -23,12 +23,15 @@ public class NodeReader {
 
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
+
+
                 int sourceNodeNum = (int) row.getCell(0).getNumericCellValue();
                 int targetNodeNum = (int) row.getCell(1).getNumericCellValue();
                 int weight = (int) row.getCell(2).getNumericCellValue();
                 Element elem = new Element(sourceNodeNum-1, targetNodeNum-1, weight);
                 preparationForGraph.add(elem);
             }
+
 
             workbook.close();
 
@@ -41,7 +44,10 @@ public class NodeReader {
                     Integer source = entry.getKey();
                     List<Element> elementList = entry.getValue();
                     for(Element elem : elementList){
-                          result[source][elem.target] = elem.weight;
+                        if(source < 0 || elem.target < 0){
+                            break;
+                        }
+                        result[source][elem.target] = elem.weight;
                     }
 
             }
@@ -49,7 +55,7 @@ public class NodeReader {
 
             return result;
         } catch (IOException e) {
-            e.printStackTrace();
+           e.printStackTrace();
         }
 
         return null;

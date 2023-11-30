@@ -11,24 +11,41 @@ import org.example.util.GraphUtils;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.StringJoiner;
 
 public final class ChinesePostman<G extends UndirectedGraph> {
 
     public ChinesePostman() {
     }
 
+    public static void printThreeDimensionalArray(List<List<List<Integer>>> list) {
+        System.out.print("[");
+        for (List<List<Integer>> outerList : list) {
+            System.out.print("[");
+            for (List<Integer> innerList : outerList) {
+                System.out.print("["+(innerList.get(0)+1)+"-"+(innerList.get(1)+1)+"],");
+            }
+        }
+        System.out.print("]");
+    }
+
     public List<Integer> run(SingleSourceShortestPathAlgo pathAlgo, G graph, int startVIdx) {
         var allCombinationsOfPairingOddDegreeVertices = getAllCombinationsOfPairingOddDegreeVertices(graph);
-        System.out.println("Grafın tək dərəcəli nöqtələri arasındakı cütləşmələr:");
-        System.out.println(allCombinationsOfPairingOddDegreeVertices);
+        System.out.println("Grafın tək dərəcəli nöqtələri arasındakı cütləşmələri:");
+        printThreeDimensionalArray(allCombinationsOfPairingOddDegreeVertices);
+        System.out.println();
 
         int lengthOfRoute = graph.getSumOfAllEdges();
         if (!allCombinationsOfPairingOddDegreeVertices.isEmpty()) {
-            var edgesWithMinWeight = getEdgesWithMinWeight(graph, pathAlgo, allCombinationsOfPairingOddDegreeVertices);
-            lengthOfRoute += edgesWithMinWeight.stream().mapToInt(Edge::getWeight).sum();
-            increaseFrequencyOfGraphEdges(graph, edgesWithMinWeight);
+            var edgesWithMinWeight = getEdgesWithMinWeight(graph, pathAlgo, allCombinationsOfPairingOddDegreeVertices); //
+            lengthOfRoute += edgesWithMinWeight.stream().mapToInt(Edge::getWeight).sum(); //
+            increaseFrequencyOfGraphEdges(graph, edgesWithMinWeight); //allah kerimdi
             System.out.println("Grafın ən yaxın tək dərəcəli nöqtələri və arasındakı məsafə:  ");
-            System.out.println(edgesWithMinWeight);
+            for (Edge edge : edgesWithMinWeight) {
+                System.out.print("["+(edge.getSrcVIdx()+1)+"--"+edge.getWeight()+"--"+(edge.getDestVIdx()+1)+"],");
+
+            }
+            System.out.println();
         }
 
         System.out.println("Gediləcək yolun marşurutu: ");

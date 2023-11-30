@@ -3,6 +3,7 @@ package org.example;
 import org.example.algo.Dijkstra;
 import org.example.model.UndirectedGraph;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -33,13 +34,12 @@ public class ChinesePostmanRunner {
             }
         }
 
-
+        System.out.println("Start "+LocalDateTime.now());
         UndirectedGraph graph = UndirectedGraph.getGraphFromAdjMatrix(nodes);
         ChinesePostman<UndirectedGraph> chinesePostman = new ChinesePostman<>();
 
-        chinesePostman.run(new Dijkstra(graph), graph, input - 1);
-
-
+        chinesePostman.run(new Dijkstra(graph), graph, input-1);
+        System.out.println("End "+LocalDateTime.now());
     }
 }
 
